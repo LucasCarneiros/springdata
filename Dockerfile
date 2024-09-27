@@ -1,14 +1,13 @@
-# Use a imagem oficial do OpenJDK
-FROM openjdk:17-jdk-alpine
+#
+# Build stage
+#
+FROM maven:3.9-eclipse-temurin-17-alpine AS build
+COPY . .
+RUN mvn clean package -DskipTests
 
-# Define o diretório de trabalho dentro do contêiner
-WORKDIR /app
-
-# Copia o arquivo JAR gerado para o contêiner
-COPY target/jpa.jar app.jar
-
-# Expõe a porta que sua aplicação utiliza
-EXPOSE 8080
-
-# Comando para rodar a aplicação
-ENTRYPOINT ["java", "-jar", "app.jar"]
+#
+# Package stage
+#
+FROM eclipse-temurin:17-jdk-alpine
+COPY --from=build /target/*.jar app.jar
+ENTRYPOINT ["java","-jar","app.jar"]

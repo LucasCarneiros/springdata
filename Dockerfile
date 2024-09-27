@@ -1,25 +1,14 @@
-#
-# Build stage
-#
-FROM maven:3.9.9-jdk-21 AS build
+# Use a imagem oficial do OpenJDK
+FROM openjdk:21-jdk-alpine
 
-COPY src /app/src
-COPY pom.xml /app
-
+# Define o diretório de trabalho dentro do contêiner
 WORKDIR /app
 
-RUN mvn clean install
-#
-# Package stage
-#
+# Copia o arquivo JAR gerado para o contêiner
+COPY target/jpa.jar app.jar
 
-
-
-COPY --from=build /app/target/*.jar app.jar
-
-WORKDIR /app
-
+# Expõe a porta que sua aplicação utiliza
 EXPOSE 8080
 
-CMD ["java","-jar","app.jar"]
-
+# Comando para rodar a aplicação
+ENTRYPOINT ["java", "-jar", "app.jar"]

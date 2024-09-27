@@ -13,7 +13,7 @@ RUN mvn clean install
 # Package stage
 #
 
-FROM openjdk:21-jre-alpine
+
 
 COPY --from=build /app/target/*.jar app.jar
 

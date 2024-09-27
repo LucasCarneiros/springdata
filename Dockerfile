@@ -1,5 +1,5 @@
 # Use a imagem oficial do OpenJDK
-FROM openjdk:21-jdk-alpine
+FROM openjdk:17-jdk-alpine
 
 # Define o diretório de trabalho dentro do contêiner
 WORKDIR /app
